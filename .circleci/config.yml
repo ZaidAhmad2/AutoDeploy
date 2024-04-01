@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   build_test:
       docker:
-        - image: circleci/node:20
+        - image: circleci/node:12
       steps:
         - checkout
         - run:
@@ -10,21 +10,21 @@ jobs:
              command: |
                 npm install --save
 
-  # build_docker_image:
-  #   docker:
-  #     - image: circleci/node:20
-  #   steps:
-  #     - checkout
-  #     - setup_remote_docker:
-  #         docker_layer_caching: false
-  #     - run:
-  #         name: Build Docker image
-  #         command: |
-  #            docker build -t nodejsapp1 -t happy361/nodejsapp1:latest .
-  #            echo $Docker_PASSWORD | docker login -u happy361 --password-stdin
-  #            docker push happy361/nodejsapp1:latest
+  build_docker_image:
+    docker:
+      - image: circleci/node:12
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: false
+      - run:
+          name: Build Docker image
+          command: |
+             docker build -t nodejsapp1 -t happy361/nodejsapp1:latest .
+             echo $Docker_PASSWORD | docker login -u happy361 --password-stdin
+             docker push happy361/nodejsapp1:latest
 workflows:
    build_test:
       jobs:
         - build_test
-#        - build_docker_image                                
+        - build_docker_image                                
