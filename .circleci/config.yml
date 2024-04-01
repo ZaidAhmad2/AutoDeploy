@@ -9,7 +9,7 @@ jobs:
              name: install dependencies
              command: |
                 npm install --save
-  build_docker_image:
+#  build_docker_image:
     docker:
       - image: circleci/node:20
     steps:
