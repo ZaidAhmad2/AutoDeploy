@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   build_test:
       docker:
-        - image: circleci/node:12
+        - image: node:20
       steps:
         - checkout
         - run:
@@ -12,7 +12,7 @@ jobs:
 
   build_docker_image:
     docker:
-      - image: circleci/node:12
+      - image: node:20
     steps:
       - checkout
       - setup_remote_docker:
@@ -20,9 +20,9 @@ jobs:
       - run:
           name: Build Docker image
           command: |
-             docker build -t nodejsapp1 -t happy361/nodejsapp1:latest .
+             docker build -t nodejsapp5 -t happy361/nodejsapp5:latest .
              echo $Docker_PASSWORD | docker login -u happy361 --password-stdin
-             docker push happy361/nodejsapp1:latest
+             docker push happy361/nodejsapp5:latest
 workflows:
    build_test:
       jobs:
