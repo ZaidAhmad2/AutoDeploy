@@ -12,7 +12,7 @@ jobs:
 
   build_docker_image:
     docker:
-      - image: node:circleci/node:12
+      - image: circleci/node:12
     steps:
       - checkout
       - setup_remote_docker:
