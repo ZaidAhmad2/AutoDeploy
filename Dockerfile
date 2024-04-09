@@ -1,6 +1,4 @@
-# Use the official Node.js 20 image as base
-FROM node:20
-
+FROM node:20.12.0
 # Set the working directory inside the container
 WORKDIR /usr/src/app
 
