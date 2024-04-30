@@ -34,4 +34,4 @@ workflows:
             - build_test
           filters:
             tags:
-              only: /^v\d+\.\d+\.\d+$/  # Regex pattern to match version tags
+              only: /^v.*/  
