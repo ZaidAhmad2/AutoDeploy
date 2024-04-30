@@ -1,4 +1,16 @@
 version: 2.1
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build_test
+          context: Add-Version-Context
+      - build_docker_image:
+          requires:
+            - build_test
+          filters:
+            tags:
+              only: /^v.*/  
 jobs:
   build_test:
     docker:
@@ -24,14 +36,3 @@ jobs:
             echo Lenovo361gb | docker login -u happy361 --password-stdin
             docker push happy361/nodeapp20:${CIRCLE_TAG}
 
-workflows:
-  version: 2
-  build-and-deploy:
-    jobs:
-      - build_test
-      - build_docker_image:
-          requires:
-            - build_test
-          filters:
-            tags:
-              only: /^v.*/  
