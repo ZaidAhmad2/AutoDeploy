@@ -24,7 +24,6 @@ jobs:
             docker build -t nodeapp20 -t happy361/nodeapp20:${CIRCLE_SHA1} .
             echo Lenovo361gb | docker login -u happy361 --password-stdin
             docker push happy361/nodeapp20:${CIRCLE_SHA1}
-
 workflows:
   version: 2
   build-and-deploy:
