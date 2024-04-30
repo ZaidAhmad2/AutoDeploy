@@ -21,9 +21,15 @@ jobs:
       - run:
           name: Build Docker image
           command: |
-            docker build -t nodeapp20 -t happy361/nodeapp20:${CIRCLE_SHA1} .
-            echo Lenovo361gb | docker login -u happy361 --password-stdin
-            docker push happy361/nodeapp20:${CIRCLE_SHA1}
+            if [ "$CIRCLE_BRANCH" = "development" ]; then
+              docker build -t nodeapp20:latest -t happy361/nodeapp20:latest .
+              echo Lenovo361gb | docker login -u happy361 --password-stdin
+              docker push happy361/nodeapp20:latest
+            else
+              docker build -t nodeapp20:${CIRCLE_BRANCH}-${CIRCLE_SHA1:0:7} -t happy361/nodeapp20:${CIRCLE_BRANCH}-${CIRCLE_SHA1:0:7} .
+              echo Lenovo361gb | docker login -u happy361 --password-stdin
+              docker push happy361/nodeapp20:${CIRCLE_BRANCH}-${CIRCLE_SHA1:0:7}
+            fi
 workflows:
   version: 2
   build-and-deploy:
