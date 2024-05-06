@@ -61,12 +61,17 @@ workflows:
                 - development  
       - build_docker_image_master:
           context: Add-Version-Context
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              ignore: /.*/
           requires:
             - build_test
-          filters:
-            branches:
-              only:
-                - master  
+#          filters:
+#            branches:
+#              only:
+#                - master  
 #          filters:
 #            tags:
 #              only: /.*/
