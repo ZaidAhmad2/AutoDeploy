@@ -11,27 +11,62 @@ jobs:
           command: |
             npm install
 
-  build_docker_image:
+  build_docker_image_development:
     docker:
       - image: cimg/node:20.12.0
     steps:
       - checkout
       - setup_remote_docker:
-          docker_layer_caching: false
+          docker_layer_caching: true
       - run:
           name: Build Docker image
           command: |
             docker build -t nodeapp20 -t happy361/nodeapp20:${CIRCLE_SHA1} .
             echo Lenovo361gb | docker login -u happy361 --password-stdin
             docker push happy361/nodeapp20:${CIRCLE_SHA1}
+
+  build_docker_image_master:
+    docker:
+      - image: cimg/node:20.12.0
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Build Docker image
+          command: |
+            TAG=$CIRCLE_TAG
+
+            if [ -z "$TAG"]
+            then 
+                  echo "Tag must be set to perform tagging to docker image"
+
+                  exit
+            fi
+
+            docker build -t nodeapp20 -t happy361/nodeapp20:$TAG .
+            echo Lenovo361gb | docker login -u happy361 --password-stdin
+            docker push happy361/nodeapp20:$TAG
 workflows:
   version: 2
   build-and-deploy:
     jobs:
       - build_test
-      - build_docker_image:
+      - build_docker_image_development:
           requires:
             - build_test
+          filters:
+            branches:
+              only:
+                - development  
+      - build_docker_image_master:
+          context: Add-Version-Context
+          requires:
+            - build_test
+          filters:
+            branches:
+              only:
+                - master  
 #          filters:
 #            tags:
 #              only: /.*/
